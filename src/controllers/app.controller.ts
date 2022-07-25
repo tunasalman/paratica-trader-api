@@ -1,10 +1,19 @@
-import { Controller, Get, HttpStatus, Param, Put } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Signal } from '../models/signal.entity';
 import { AppService } from '../services/app.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller()
 export class AppController {
   constructor(
@@ -38,7 +47,7 @@ export class AppController {
 
   @ApiOkResponse({ status: HttpStatus.OK, type: Signal, isArray: true })
   @Get('history')
-  async pairHistory() {
+  async getHistory() {
     return this.signalRepo.find();
   }
 }
